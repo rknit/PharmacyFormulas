@@ -1,0 +1,46 @@
+html, body {
+    background-color: lightblue;
+    font-size: 1rem;
+}
+
+th {
+    font-size: 1.2em;
+}
+
+.disabled {
+    display: none !important;
+}
+
+#calc-container {
+    background-color: red;
+}
+
+#desired-solution {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 8px;
+}
+
+#d-s-select {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    background-color: green;
+}
+
+#base-sol {
+    padding: 12px;
+    background-color: yellow;
+}
+
+#base-sol-select {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+}
+
+#error-box {
+    background-color: blueviolet;
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Pharmacy Formulas</title>
+		<link rel="stylesheet" href="index.css" />
+		<script src="index.js"></script>
+	</head>
+	<body>
+		<table id="calc-container">
+			<thead>
+				<th>Desired Solution</th>
+				<th>Base Solution</th>
+			</thead>
+			<tbody>
+				<td id="desired-solution">
+					<div id="d-s-select">
+						Dex
+						<input type="number" id="d-input" value="10.0" />
+						<select id="s-input"></select>
+					</div>
+					<div id="d-s-confirm" class="disabled">D_S</div>
+					<button id="confirm-button">Confirm</button>
+				</td>
+				<td id="base-sol">
+					<select id="base-sol-select"></select>
+				</td>
+			</tbody>
+			<tfoot>
+				<th id="error-box" hidden>Error:</th>
+			</tfoot>
+		</table>
+	</body>
+</html>
