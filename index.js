@@ -34,8 +34,10 @@ function onDextroseChange() {
 		isNaN(dex) ||
 		!isFinite(dex) ||
 		dex <= 0
-	)
-		dex_num_input.value = "10.0";
+	) {
+		showError("Invalid Dextrose value");
+		return;
+	} else hideError();
 
 	getBaseSolutions();
 }
