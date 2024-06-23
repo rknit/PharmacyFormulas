@@ -7,8 +7,8 @@ let unused_base_sol_label;
 let error_box;
 let confirm_button;
 let desire_sol_amount;
-let glucose50_amount;
-let total_amount;
+let glucose50_amount_display;
+let total_amount_display;
 
 const Type = Object.freeze({
 	S: Symbol("S"),
@@ -29,9 +29,9 @@ window.onload = () => {
 	base_sol_select.addEventListener("change", calculateSolution);
 	unused_base_sol_label = document.getElementById("unused-base-sol");
 
-	glucose50_amount = document.getElementById("glucose-amount");
+	glucose50_amount_display = document.getElementById("glucose-amount");
 
-	total_amount = document.getElementById("total-amount");
+	total_amount_display = document.getElementById("total-amount");
 
 	error_box = document.getElementById("error-box");
 	resetResult();
@@ -183,6 +183,7 @@ function calculateSolution() {
 	console.log(base_sol);
 
 	const target_cont = Number(desired_sol_cont.value);
+	const target_amt = Number(desire_sol_amount.value);
 	const base_cont = base_sol.dex;
 	const glu_cont = 50.0;
 
@@ -201,13 +202,19 @@ function calculateSolution() {
 		base_amt = base_sol.amt;
 	}
 
-	const total_amt = base_amt + glu_amt;
+	let total_amt = base_amt + glu_amt;
+
+	const scaling =
+		total_amt < target_amt ? target_amt / (base_amt + glu_amt) : 1;
+	base_amt *= scaling;
+	glu_amt *= scaling;
+	total_amt = base_amt + glu_amt;
 
 	console.log(`Base ${base_amt}ml, Glu ${glu_amt}ml, Total ${total_amt}ml`);
 
-	glucose50_amount.innerText = `${roundReportNumber(glu_amt)}ml`;
+	glucose50_amount_display.innerText = `${roundReportNumber(glu_amt)}ml`;
 
-	total_amount.innerText = `${roundReportNumber(total_amt)}ml`;
+	total_amount_display.innerText = `${roundReportNumber(total_amt)}ml`;
 }
 
 function resetResult() {
@@ -219,7 +226,7 @@ function resetResult() {
 	base_sol_select.replaceChildren(none_opt);
 	unused_base_sol_label.hidden = true;
 
-	glucose50_amount.innerText = "--- ml";
+	glucose50_amount_display.innerText = "--- ml";
 
-	total_amount.innerText = "--- ml";
+	total_amount_display.innerText = "--- ml";
 }
