@@ -12,20 +12,41 @@
 			<thead>
 				<th>Desired Solution</th>
 				<th>Base Solution</th>
+				<th>50% glucose</th>
+				<th>Total</th>
 			</thead>
 			<tbody>
 				<td id="desired-solution">
-					<div id="d-s-select">
-						Dex
-						<input type="number" id="d-input" value="10.0" />
+					<div id="d-s-edit">
+						<span
+							>D<input
+								type="number"
+								id="d-input"
+								value="10"
+								min="5"
+								max="50"
+						/></span>
 						<select id="s-input"></select>
+						<span
+							>Amount
+							<input
+								type="number"
+								id="d-amount"
+								value="1000"
+								min="500"
+						/></span>
 					</div>
-					<div id="d-s-confirm" class="disabled">D_S</div>
+					<div id="d-s-confirmed" class="disabled">D_S</div>
 					<button id="confirm-button">Confirm</button>
 				</td>
-				<td id="base-sol">
-					<select id="base-sol-select"></select>
+				<td>
+					<div id="base-sol">
+						<select id="base-sol-select"></select>
+						<span id="unused-base-sol" hidden>UNUSED</span>
+					</div>
 				</td>
+				<td id="glucose-amount">---ml</td>
+				<td id="total-amount">---ml</td>
 			</tbody>
 			<tfoot>
 				<th id="error-box" hidden>Error:</th>
