@@ -13,13 +13,11 @@ let total_amount_display;
 const Type = Object.freeze({
 	S: Symbol("S"),
 	S_HALF: Symbol("S/2"),
-	W: Symbol("W"),
 });
 
 const BASE_SOLUTIONS = Object.freeze([
-	{ name: "D10S", dex: 10, type: Type.S, amt: 1000 },
-	{ name: "D10S", dex: 10, type: Type.S, amt: 500 },
-	{ name: "D5S", dex: 5, type: Type.S, amt: 1000 },
+	{ name: "D10S", dex: 10, type: Type.S },
+	{ name: "D5S", dex: 5, type: Type.S },
 ]);
 
 window.onload = () => {
@@ -100,10 +98,6 @@ function verifyAndGetBaseSolutions() {
 		showVerifyError("Invalid amount");
 		return;
 	}
-	if (d_sol_amount < 500) {
-		showVerifyError("Amount must not be less than 500ml");
-		return;
-	}
 
 	const d_type =
 		desired_type_select.options[desired_type_select.selectedIndex].text;
@@ -129,8 +123,8 @@ function reportAndShowBaseSolutions(base_solutions) {
 	console.log(JSON.stringify(base_solutions));
 	let options = base_solutions.map((sol) => {
 		let opt = document.createElement("option");
-		opt.value = `${sol.name}${sol.amt}`;
-		opt.innerHTML = `${sol.name} ${sol.amt}ml`;
+		opt.value = sol.name;
+		opt.innerHTML = sol.name;
 		return opt;
 	});
 	base_sol_select.replaceChildren(...options);
@@ -138,11 +132,9 @@ function reportAndShowBaseSolutions(base_solutions) {
 	let preferred_sol_index = 0;
 	let prev_points = Number.MAX_VALUE;
 	for (let i = 0; i < base_solutions.length; i++) {
-		let delta_dex = 1e6 * Math.abs(base_solutions[i].dex - d_cont);
-		let delta_amt = Math.abs(base_solutions[i].amt - d_amt);
-		let delta = delta_dex + delta_amt;
-		if (delta < prev_points) {
-			prev_points = delta;
+		let delta_dex = Math.abs(base_solutions[i].dex - d_cont);
+		if (delta_dex < prev_points) {
+			prev_points = delta_dex;
 			preferred_sol_index = i;
 		} else {
 			break;
@@ -178,7 +170,7 @@ function roundReportNumber(number, decimal_point = 1) {
 
 function calculateSolution() {
 	const base_sol = BASE_SOLUTIONS.find(
-		(b) => `${b.name}${b.amt}` === base_sol_select.value
+		(b) => b.name === base_sol_select.value
 	);
 	console.log(base_sol);
 
@@ -190,27 +182,18 @@ function calculateSolution() {
 	const base_ratio = glu_cont - target_cont;
 	const glu_ratio = target_cont - base_cont;
 
-	let base_amt = 0;
 	let glu_amt = 0;
 
 	if (base_ratio === 0) {
-		glu_amt = base_sol.amt;
 		unused_base_sol_label.hidden = false;
 	} else {
-		const glu_multiplier = base_sol.amt / base_ratio;
+		const glu_multiplier = target_amt / base_ratio;
 		glu_amt = glu_ratio * glu_multiplier;
-		base_amt = base_sol.amt;
 	}
 
-	let total_amt = base_amt + glu_amt;
+	const total_amt = target_amt + glu_amt;
 
-	const scaling =
-		total_amt < target_amt ? target_amt / (base_amt + glu_amt) : 1;
-	base_amt *= scaling;
-	glu_amt *= scaling;
-	total_amt = base_amt + glu_amt;
-
-	console.log(`Base ${base_amt}ml, Glu ${glu_amt}ml, Total ${total_amt}ml`);
+	console.log(`Base ${target_amt}ml, Glu ${glu_amt}ml, Total ${total_amt}ml`);
 
 	glucose50_amount_display.innerText = `${roundReportNumber(glu_amt)}ml`;
 
